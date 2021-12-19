@@ -1,0 +1,32 @@
+/* Single product page */
+button.single_add_to_cart_button.button.alt {
+	background: #000000;
+	font-size: 14px;
+}
+
+/* Product page */
+a.button.product_type_simple.add_to_cart_button.ajax_add_to_cart {
+    background: #23282d;
+    color: #ffffff;
+}
+
+li.product.type-product{
+    text-align:  center;
+}
+
+/* Cart Page */
+input#coupon_code {
+    width: 120px;
+}
+
+.woocommerce #respond input#submit:hover, .woocommerce a.button:hover, .woocommerce button.button:hover, .woocommerce input.button:hover {
+    background-color: yellow;
+    text-decoration: none;
+    background-image: none;
+    color: #515151;
+}
+
+/********** New Arrival (index.php)  **************/
+div.new-arrivals a.button.product_type_simple.add_to_cart_button.ajax_add_to_cart {
+    background-color: orange;
+}

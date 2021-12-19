@@ -643,6 +643,14 @@ function custom_dashboard_info_widget(){
 // Enable shortcode inside wp widget area
 add_filter('widget_text', 'do_shortcode');
 
+/*** Add svg/ webp to allowed media types  ***/
+function wpdocs_add_webp( $wp_get_mime_types ) {
+    $wp_get_mime_types['webp'] = 'image/webp';
+    $wp_get_mime_types['svg'] = 'image/svg+xml';
+    return $wp_get_mime_types;
+}
+add_filter('mime_types', 'wpdocs_add_webp');
+
 // admin dashboard notice
 add_action('admin_notices', 'custom_admin_notices');
 

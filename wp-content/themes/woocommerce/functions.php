@@ -488,8 +488,8 @@ add_filter('woocommerce_output_related_products_args', 'my_custom_related_produc
 
 function my_custom_related_product_function($args){
 	$args = array(
-		'posts_per_page' =>3,
-		'columns'=>3,
+		'posts_per_page' => 3,
+		'columns'=> 3,
 		'orderby' => 'rand'
 	);
 	return $args;
@@ -592,8 +592,8 @@ function my_additional_fees_country_based(){
     	$woocommerce->cart->add_fee('Additional Fee: ', $price, true);
 }
 
-//Product featured video
-//Single page
+// Product featured video
+// Single page
 if(!function_exists('woocommerce_get_product_video')){
 	add_filter('woocommerce_single_product_image_thumbnail_html', 'woocommerce_get_product_video');
 	function woocommerce_get_product_video($html){
@@ -603,7 +603,6 @@ if(!function_exists('woocommerce_get_product_video')){
 		}else{
 			return $html;
 		}
-
 	}
 }
 

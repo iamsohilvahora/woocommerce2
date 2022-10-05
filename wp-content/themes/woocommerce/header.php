@@ -68,23 +68,16 @@
 			<form action="<?php echo home_url('/'); ?>">
 			<?php
 				wc_product_dropdown_categories(array(
-					'parent'=>0,
-					'value_field'=>'slug',
-					//'exclude'=>'18,22',
+					'parent' => 0,
+					'value_field' => 'slug',
+					// 'exclude' => '18,22',
 				));
-
 			?>
-			<input type="text" name="s" />
-			<input type="hidden" name="post_type" value="product" />
-			<input type="submit" value="Product">
-
+				<input type="text" name="s" />
+				<input type="hidden" name="post_type" value="product" />
+				<input type="submit" value="Product">
 			</form>
-			<?php //echo do_shortcode('[a_simple_example]'); 
-
-
-			
-
-			?>	     
+			<?php // echo do_shortcode('[a_simple_example]'); ?>	     
 	    </div>
 	  </div>
 	</nav>

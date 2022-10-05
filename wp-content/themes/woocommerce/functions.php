@@ -251,28 +251,22 @@ include get_template_directory().'/include/general_function.php';
 /**
  * Show cart contents / total Ajax
  */
-add_filter( 'woocommerce_add_to_cart_fragments', 'woocommerce_header_add_to_cart_fragment' );
-
-function woocommerce_header_add_to_cart_fragment( $fragments ) {
+function woocommerce_header_add_to_cart_fragment($fragments){
 	global $woocommerce;
-
-	ob_start();
-
-	?>
+	ob_start(); ?>
 	<span class="items-count"><?php echo WC()->cart->get_cart_contents_count();
 			echo " - ";
 			echo WC()->cart->get_cart_total(); 
 	 ?></span>
-
 	<?php
 	$fragments['span.items-count'] = ob_get_clean();
 	return $fragments;
 }
+add_filter('woocommerce_add_to_cart_fragments', 'woocommerce_header_add_to_cart_fragment');
 
 /************** Theme customization setting **********************/
 function wp_theme_load_customizer($wp_customize){
 	//Customizer code
-
 	//add section
 	$wp_customize->add_section('sec_copyright', array(
 		'title' => 'Copyright Section',
@@ -299,7 +293,7 @@ function wp_theme_load_customizer($wp_customize){
 		'description' => 'This is a product panel section'
 	));
 
-	//add setting and control for new arrival limit
+	// add setting and control for new arrival limit
 	$wp_customize->add_setting('set_new_limit', array(
 		'type' => 'theme_mod',
 		'default' => '',
@@ -330,43 +324,38 @@ function wp_theme_load_customizer($wp_customize){
 add_action('customize_register', 'wp_theme_load_customizer');
 
 /* Change number or products per row to 4 */
-add_filter('loop_shop_columns', 'loop_columns', 999);
 if (!function_exists('loop_columns')) {
 	function loop_columns() {
 		$row = get_option('wc_number_of_products_per_row') ? get_option('wc_number_of_products_per_row') : 4;
-
-
 		//return 4; // 4 products per row
 		return $row; // 4 products per row
 	}
 }
+add_filter('loop_shop_columns', 'loop_columns', 999);
 
 /* Change number of products that are displayed per page (shop page) */
-add_filter( 'loop_shop_per_page', 'new_loop_shop_per_page', 20 );
-
-function new_loop_shop_per_page( $cols ) {
+function new_loop_shop_per_page($cols){
   // $cols contains the current number of products per page based on the value stored on Options –> Reading
   // Return the number of products you wanna show per page.
   $cols = get_option('wc_number_of_products_per_page') ? get_option('wc_number_of_products_per_page') : 12;
-
   //$cols = 12;
   return $cols;
 }
+add_filter('loop_shop_per_page', 'new_loop_shop_per_page', 20);
 
 /**
  * Create the section beneath the products tab
  **/
-add_filter( 'woocommerce_get_sections_products', 'wc_customize_add_section', 10, 2 );
-function wc_customize_add_section( $sections ) {	
-	$sections['wc_customizer_shop'] = __( 'Customize Shop Page', 'woocommerce' );
+function wc_customize_add_section($sections){	
+	$sections['wc_customizer_shop'] = __('Customize Shop Page', 'woocommerce');
 	return $sections;
 }
+add_filter('woocommerce_get_sections_products', 'wc_customize_add_section', 10, 2);
 
 /**
  * Add settings to the specific section we created before
  */
-add_filter( 'woocommerce_get_settings_products', 'wc_customize_all_settings', 10, 2 );
-function wc_customize_all_settings( $settings, $current_section ) {
+function wc_customize_all_settings($settings, $current_section){
 	/**
 	 * Check the current section is what we want
 	 **/
@@ -403,7 +392,7 @@ function wc_customize_all_settings( $settings, $current_section ) {
 			'desc'     => __( 'Hide related products', 'text-domain' ),
 		);
 		
-		$settings_wc_customize[] = array( 'type' => 'sectionend', 'id' => 'wc_customizer_shop' );
+		$settings_wc_customize[] = array('type' => 'sectionend', 'id' => 'wc_customizer_shop');
 		return $settings_wc_customize;
 	/**
 	 * If not, return the standard settings
@@ -412,27 +401,27 @@ function wc_customize_all_settings( $settings, $current_section ) {
 		return $settings;
 	}
 }
+add_filter('woocommerce_get_settings_products', 'wc_customize_all_settings', 10, 2);
 
 /**
  * Display category image on category archive
  */
-add_action( 'woocommerce_archive_description', 'woocommerce_category_image', 2 );
-function woocommerce_category_image() {
-    if ( is_product_category() ){
+function woocommerce_category_image(){
+    if(is_product_category()){
 	    global $wp_query;
 	    $cat = $wp_query->get_queried_object();
-	    $thumbnail_id = get_term_meta( $cat->term_id, 'thumbnail_id', true );
-	    $image = wp_get_attachment_url( $thumbnail_id );
-	    if ( $image ) {
-		    echo '<img src="' . $image . '" alt="' . $cat->name . '" />';
+	    $thumbnail_id = get_term_meta($cat->term_id, 'thumbnail_id', true );
+	    $image = wp_get_attachment_url($thumbnail_id);
+	    if($image){
+		    echo '<img src="'.$image.'" alt="'.$cat->name.'" />';
 		}
 	}
 }
+add_action('woocommerce_archive_description', 'woocommerce_category_image', 2);
 
 //Custom Shortcodes
 if(!function_exists('my_shortcode_function')):
 	add_shortcode('my_shortcode_1', 'my_shortcode_function');
-
 	function my_shortcode_function(){
 		return "<p>This is a first shortcode.</p>";
 	}
@@ -451,7 +440,6 @@ if(!function_exists('content_shortcode_function')):
 	add_shortcode('my_content_shortcode', 'content_shortcode_function');
 	function content_shortcode_function($args, $content=""){
 		$arg = shortcode_atts(array('h1'=>false), $args, 'my_content_shortcode');
-
 		if($arg['h1'] == false){
 			return $content;
 		}else{
@@ -459,17 +447,13 @@ if(!function_exists('content_shortcode_function')):
 		}
 	}
 endif;	
-
-//Custom tabs(content-single-product.php)
-
+// Custom tabs(content-single-product.php)
 //remove_action("woocommerce_after_single_product_summary", "woocommerce_output_product_data_tabs",10);
 
 if(!function_exists('my_custom_tabs_function')){
-	add_filter( 'woocommerce_product_tabs', 'my_custom_tabs_function');
-
+	add_filter('woocommerce_product_tabs', 'my_custom_tabs_function');
 	function my_custom_tabs_function($tabs){
 		unset($tabs['reviews']);
-
 		$tabs['video'] =  array(
 			'title'=> 'Video',
 			'priority' => 30,
@@ -477,15 +461,12 @@ if(!function_exists('my_custom_tabs_function')){
 		);
 		return $tabs;
 	}
-
 	function my_tab_video_function(){
 		echo '<iframe width="560" height="315" src="https://www.youtube.com/embed/3aNY0OiNPZQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
 	}
 }
 
 //Related products(content-single-product.php)
-add_filter('woocommerce_output_related_products_args', 'my_custom_related_product_function');
-
 function my_custom_related_product_function($args){
 	$args = array(
 		'posts_per_page' => 3,
@@ -494,8 +475,7 @@ function my_custom_related_product_function($args){
 	);
 	return $args;
 }
-
-add_action('woocommerce_after_single_product_summary', 'my_related_products_custom_function', 15);
+add_filter('woocommerce_output_related_products_args', 'my_custom_related_product_function');
 
 // Show /hide related products (woocommerce->setting>products>customize shop page)
 function my_related_products_custom_function(){
@@ -504,36 +484,29 @@ function my_related_products_custom_function(){
 		remove_action('woocommerce_after_single_product_summary', 'woocommerce_output_related_products', 20);
 	}
 }
+add_action('woocommerce_after_single_product_summary', 'my_related_products_custom_function', 15);
 
 // Change default placeholder image (shop page)
-add_filter('woocommerce_placeholder_img_src', 'my_default_placeholder_image');
-
 function my_default_placeholder_image($img){
 	return 'https://picsum.photos/seed/picsum/200/300';
 }
+add_filter('woocommerce_placeholder_img_src', 'my_default_placeholder_image');
 
 // Custom wp admin bar menu render
-if ( !function_exists('add_custom_admin_bar_menu') ) {
- 
-    add_action( 'wp_before_admin_bar_render', 'add_custom_admin_bar_menu');
- 
-    function add_custom_admin_bar_menu()
- 
-    {
+if(!function_exists('add_custom_admin_bar_menu')){
+    add_action('wp_before_admin_bar_render', 'add_custom_admin_bar_menu');
+    function add_custom_admin_bar_menu(){
         global $wp_admin_bar;
- 
         $args = [
             'id' => 'custom_admin_bar_menu_id', // id must be unique
             'title' => 'Custom Menu', // title for display in admin bar
             'href' => 'http://add-your-link-here.com', // link for the achor tag
- 
             // meta for link e.g: class, target, and custom data attributes etc
             'meta' => [ 
                 'class' => 'custom_class', // your custom class
             ],
         ];
         $wp_admin_bar->add_menu($args);
- 
         $args_submenu_1 = [
             'id' => 'cusotm-sub-menu-1',
             'title' => 'Sub menu-1',
@@ -544,7 +517,6 @@ if ( !function_exists('add_custom_admin_bar_menu') ) {
             ],
         ];
         $wp_admin_bar->add_menu($args_submenu_1);
- 
         $args_submenu_2 = [
             'id' => 'cusotm-sub-menu-2',
             'title' => 'Sub menu-2',
@@ -559,38 +531,34 @@ if ( !function_exists('add_custom_admin_bar_menu') ) {
 }
 
 // Wp logout action
-add_action('wp_logout', 'redirect_user_after_logout');
-
 function redirect_user_after_logout(){
 	wp_redirect(home_url());
 	exit();
 }
+add_action('wp_logout', 'redirect_user_after_logout');
 
 //Woocommerce cart additional fees
-// add_action( 'woocommerce_cart_calculate_fees', 'add_additional_fees');
 // function add_additional_fees() {
 // 	global $woocommerce;
 //     if ( is_admin() && ! defined( 'DOING_AJAX' ) )
 //     	return;
-
 //     $price = 2;
 //     $woocommerce->cart->add_fee('Additional Fee', $price, true);
 // }
+// add_action( 'woocommerce_cart_calculate_fees', 'add_additional_fees');
 
-add_action( 'woocommerce_cart_calculate_fees', 'my_additional_fees_country_based');
 function my_additional_fees_country_based(){
 	global $woocommerce;
     if(is_admin() && !defined('DOING_AJAX'))
     	return;
-
     $price = 1;
 	//$woocommerce->cart->add_fee('Additional Fee', $price, true);
-
     $fee_country = array('IN', 'PK', 'US');
     $customer_country = $woocommerce->customer->get_shipping_country();
     if(in_array($customer_country, $fee_country))
     	$woocommerce->cart->add_fee('Additional Fee: ', $price, true);
 }
+add_action( 'woocommerce_cart_calculate_fees', 'my_additional_fees_country_based');
 
 // Product featured video
 // Single page
@@ -609,7 +577,6 @@ if(!function_exists('woocommerce_get_product_video')){
 //Product Page
 function woocommerce_get_product_thumbnail($size='shop_catalog', $deprecated1=0, $deprecated2=0){
 	global $post;
-
 	$featured_video = get_field('featured_video', get_the_ID());
 	if(!empty(trim($featured_video))){
 			return '<iframe width="560" height="315" src="https://www.youtube.com/embed/'.$featured_video.'" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
@@ -623,17 +590,16 @@ function woocommerce_get_product_thumbnail($size='shop_catalog', $deprecated1=0,
 }
 
 // Change footer text in wordpress panel
-add_filter('admin_footer_text', 'change_footer_text');
 function change_footer_text($text){
 	return 'Created by Sohil Vahora';
 }
+add_filter('admin_footer_text', 'change_footer_text');
 
 // Customize admin dashboard
-add_action('wp_dashboard_setup', 'custom_dashboard_widget');
-
 function custom_dashboard_widget(){
 	wp_add_dashboard_widget('custom_id', 'Contact Us for Help', 'custom_dashboard_info_widget', null, null);
 }
+add_action('wp_dashboard_setup', 'custom_dashboard_widget');
 
 function custom_dashboard_info_widget(){
 	echo 'Contact us for any help, we are always for you.';
@@ -643,7 +609,7 @@ function custom_dashboard_info_widget(){
 add_filter('widget_text', 'do_shortcode');
 
 /*** Add svg/ webp to allowed media types  ***/
-function wpdocs_add_webp( $wp_get_mime_types ) {
+function wpdocs_add_webp($wp_get_mime_types){
     $wp_get_mime_types['webp'] = 'image/webp';
     $wp_get_mime_types['svg'] = 'image/svg+xml';
     return $wp_get_mime_types;
@@ -651,14 +617,13 @@ function wpdocs_add_webp( $wp_get_mime_types ) {
 add_filter('mime_types', 'wpdocs_add_webp');
 
 // admin dashboard notice
-add_action('admin_notices', 'custom_admin_notices');
-
 function custom_admin_notices(){ ?>
 	<div class="notice notice-info is-dismissible">
 		<h4>Contact us for help</h4>
 		<p>For any help don't hesitate to contact.</p>
 	</div>
 <?php } 
+add_action('admin_notices', 'custom_admin_notices');
 
 /********** CPT ******************/
 require get_template_directory().'/include/type-movies.php';
@@ -676,7 +641,6 @@ function screen_contextual_help_tab(){
 	$screen->add_help_tab($args);
 }
 add_action('admin_head', 'screen_contextual_help_tab');
-
 
 // Remove taxonomy archive description
 remove_action('woocommerce_archive_description', 'woocommerce_taxonomy_archive_description');

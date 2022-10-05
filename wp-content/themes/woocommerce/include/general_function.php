@@ -43,7 +43,6 @@ function load_template_layout(){
 		add_action("woocommerce_before_main_content", "close_product_column", 10);
 	}
 }
-
 add_action("template_redirect", "load_template_layout");
 
 //remove page title (e.g. Shop)
@@ -51,7 +50,6 @@ function show_page_title($val){
 	$val = false;
 	return $val;
 }
-
 add_filter("woocommerce_show_page_title", "show_page_title");
 
 // add description after product title 
@@ -61,6 +59,3 @@ add_filter("woocommerce_show_page_title", "show_page_title");
 remove_action("woocommerce_before_main_content", "woocommerce_breadcrumb",20);
 remove_action("woocommerce_before_shop_loop", "woocommerce_result_count",20);
 remove_action("woocommerce_before_shop_loop", "woocommerce_catalog_ordering",30);
-
-
-
